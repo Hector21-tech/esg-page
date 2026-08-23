@@ -1,0 +1,10 @@
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Local previews and logs
+*-check-*.png
+preview-*.png
+*.log
+
