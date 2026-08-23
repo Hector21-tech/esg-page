@@ -21,6 +21,7 @@
   --hero-copy-y: 0px;
   --hero-copy-opacity: 1;
   --hero-grid-x: 0px;
+  --hero-motion-scroll: 0px;
 }
 
 * {
@@ -102,6 +103,48 @@ button {
   transform: scaleX(0);
   transform-origin: left center;
   will-change: transform;
+}
+
+.page-jump {
+  position: fixed;
+  z-index: 260;
+  inset: 0;
+  background:
+    radial-gradient(circle at 72% 50%, rgba(26, 58, 44, 0.2), transparent 34rem),
+    rgba(7, 7, 6, 0.97);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page-jump::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3.5rem;
+  height: 1px;
+  background: var(--gold-bright);
+  content: "";
+  opacity: 0;
+  transform: translate(-50%, -50%) scaleX(0);
+  transition: opacity 180ms ease, transform 360ms var(--ease-out);
+}
+
+body.is-page-jumping .page-jump {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 190ms ease, visibility 0s;
+}
+
+body.is-page-jumping .page-jump::after {
+  opacity: 0.8;
+  transform: translate(-50%, -50%) scaleX(1);
+}
+
+body.is-page-revealing .page-jump {
+  opacity: 0;
+  visibility: visible;
+  transition: opacity 480ms var(--ease-out);
 }
 
 .page-shell {
@@ -239,6 +282,163 @@ button {
   transform: translate3d(0, var(--hero-shift), 0) scale(var(--hero-scale));
   transform-origin: center;
   will-change: transform;
+}
+
+.hero__motion {
+  --hero-motion-x: 0px;
+  --hero-motion-y: 0px;
+  position: absolute;
+  z-index: -1;
+  top: 49%;
+  left: 77%;
+  width: min(72vw, 70rem);
+  aspect-ratio: 1;
+  opacity: 0.72;
+  pointer-events: none;
+  transform: translate3d(
+    calc(-50% + var(--hero-motion-x)),
+    calc(-50% + var(--hero-motion-y) + var(--hero-motion-scroll)),
+    0
+  );
+  transition: transform 1100ms var(--ease-out);
+  will-change: transform;
+}
+
+.hero__orbit,
+.hero__signal,
+.hero__sweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  pointer-events: none;
+}
+
+.hero__orbit {
+  border: 1px solid rgba(235, 214, 142, 0.18);
+  border-radius: 50%;
+  mix-blend-mode: screen;
+}
+
+.hero__orbit::before {
+  position: absolute;
+  top: 50%;
+  right: -0.18rem;
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 50%;
+  background: var(--gold-bright);
+  box-shadow: 0 0 18px rgba(235, 214, 142, 0.72);
+  content: "";
+}
+
+.hero__orbit--outer {
+  width: 100%;
+  height: 100%;
+  animation: hero-orbit-outer 18s ease-in-out infinite alternate;
+}
+
+.hero__orbit--middle {
+  width: 74%;
+  height: 74%;
+  border-color: rgba(85, 154, 120, 0.24);
+  animation: hero-orbit-middle 14s ease-in-out infinite alternate;
+}
+
+.hero__orbit--middle::before {
+  top: auto;
+  right: auto;
+  bottom: 12%;
+  left: 10%;
+  background: #75b494;
+  box-shadow: 0 0 18px rgba(85, 154, 120, 0.72);
+}
+
+.hero__orbit--inner {
+  width: 48%;
+  height: 48%;
+  border-color: rgba(235, 214, 142, 0.12);
+  border-style: dashed;
+  animation: hero-orbit-inner 24s linear infinite;
+}
+
+.hero__orbit--inner::before {
+  display: none;
+}
+
+.hero__signal {
+  width: 86%;
+  height: 86%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 20deg,
+    transparent 0deg 255deg,
+    rgba(235, 214, 142, 0.02) 275deg,
+    rgba(235, 214, 142, 0.34) 302deg,
+    transparent 330deg 360deg
+  );
+  -webkit-mask: radial-gradient(circle, transparent 67%, #000 68%, #000 69%, transparent 70%);
+  mask: radial-gradient(circle, transparent 67%, #000 68%, #000 69%, transparent 70%);
+  animation: hero-signal-spin 28s linear infinite;
+  opacity: 0.78;
+}
+
+.hero__sweep {
+  width: 1px;
+  height: 88%;
+  overflow: visible;
+  background: linear-gradient(180deg, transparent, rgba(117, 180, 148, 0.42), transparent);
+  box-shadow: 0 0 20px rgba(85, 154, 120, 0.12);
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(24deg);
+  animation: hero-light-sweep 9s ease-in-out infinite;
+}
+
+@keyframes hero-orbit-outer {
+  from {
+    transform: translate(-50%, -50%) rotate(-5deg) scale(0.98);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(7deg) scale(1.025);
+  }
+}
+
+@keyframes hero-orbit-middle {
+  from {
+    transform: translate(-50%, -50%) rotate(9deg) scale(1.025);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-8deg) scale(0.97);
+  }
+}
+
+@keyframes hero-orbit-inner {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes hero-signal-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes hero-light-sweep {
+  0%, 18% {
+    left: 28%;
+    opacity: 0;
+  }
+  36%, 55% {
+    opacity: 0.55;
+  }
+  76%, 100% {
+    left: 72%;
+    opacity: 0;
+  }
 }
 
 .hero__media img {
@@ -1117,6 +1317,12 @@ button {
       linear-gradient(180deg, rgba(7, 7, 6, 0.65), transparent 35%);
   }
 
+  .hero__motion {
+    left: 75%;
+    width: min(92vw, 58rem);
+    opacity: 0.62;
+  }
+
   .manifesto__layout,
   .services__heading {
     grid-template-columns: 1fr;
@@ -1196,6 +1402,10 @@ button {
   .hero__grid {
     opacity: 0.14;
     background-size: 50% 100%, 100% 25%;
+  }
+
+  .hero__motion {
+    display: none;
   }
 
   .hero__title {
@@ -1358,6 +1568,16 @@ button {
 
   .hero__media {
     transform: scale(1.02);
+  }
+
+  .hero__motion {
+    opacity: 0.38;
+  }
+
+  .hero__orbit,
+  .hero__signal,
+  .hero__sweep {
+    animation: none !important;
   }
 
   .js .principle {

@@ -11,7 +11,12 @@ const principleWords = [...document.querySelectorAll("[data-principle-word]")];
 const principleCaptions = [...document.querySelectorAll("[data-principle-caption]")];
 const principleIndex = document.querySelector("[data-principle-index]");
 const principleProgress = document.querySelector("[data-principle-progress]");
+const hero = document.querySelector(".hero");
+const heroMotion = document.querySelector(".hero__motion");
+const pageJump = document.querySelector("[data-page-jump]");
 let activePrincipleStage = 0;
+let pageJumpTimer;
+let pageRevealTimer;
 
 const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
 
@@ -35,6 +40,68 @@ menuToggle?.addEventListener("click", () => {
 
 menuLinks.forEach((link) => link.addEventListener("click", closeMenu));
 
+const sectionLinks = document.querySelectorAll(
+  '.site-header a[href^="#"], .site-footer a[href^="#"], .hero a[href^="#"]',
+);
+
+sectionLinks.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const selector = link.getAttribute("href");
+    const target = selector ? document.querySelector(selector) : null;
+
+    if (!target) return;
+
+    event.preventDefault();
+    closeMenu();
+
+    const currentY = window.scrollY;
+    const targetY = target.getBoundingClientRect().top + currentY;
+    const principleTop = principle?.offsetTop ?? Number.POSITIVE_INFINITY;
+    const principleBottom = principle
+      ? principleTop + principle.offsetHeight
+      : Number.NEGATIVE_INFINITY;
+    const pathStart = Math.min(currentY, targetY);
+    const pathEnd = Math.max(currentY, targetY);
+    const crossesPrinciple =
+      pathStart < principleBottom &&
+      pathEnd > principleTop &&
+      Math.abs(currentY - targetY) > window.innerHeight * 0.75;
+
+    const finishNavigation = () => {
+      const previousScrollBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      window.scrollTo(0, targetY);
+      root.style.scrollBehavior = previousScrollBehavior;
+      window.history.pushState(null, "", selector);
+      updateScrollEffects();
+    };
+
+    window.clearTimeout(pageJumpTimer);
+    window.clearTimeout(pageRevealTimer);
+    document.body.classList.remove("is-page-jumping", "is-page-revealing");
+
+    if (reduceMotion || !crossesPrinciple || !pageJump) {
+      window.scrollTo({
+        top: targetY,
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+      window.history.pushState(null, "", selector);
+      return;
+    }
+
+    document.body.classList.add("is-page-jumping");
+    pageJumpTimer = window.setTimeout(() => {
+      finishNavigation();
+      document.body.classList.remove("is-page-jumping");
+      document.body.classList.add("is-page-revealing");
+
+      pageRevealTimer = window.setTimeout(() => {
+        document.body.classList.remove("is-page-revealing");
+      }, 520);
+    }, 200);
+  });
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeMenu();
 });
@@ -57,6 +124,7 @@ const updateScrollEffects = () => {
     root.style.setProperty("--hero-copy-y", `${heroProgress * -82}px`);
     root.style.setProperty("--hero-copy-opacity", String(1 - heroProgress * 0.72));
     root.style.setProperty("--hero-grid-x", `${heroProgress * -42}px`);
+    root.style.setProperty("--hero-motion-scroll", `${heroProgress * -48}px`);
   }
 
   let closestService = null;
@@ -127,6 +195,22 @@ window.addEventListener(
 );
 
 window.addEventListener("resize", updateScrollEffects, { passive: true });
+
+if (!reduceMotion && hero && heroMotion) {
+  hero.addEventListener("pointermove", (event) => {
+    const rect = hero.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 22;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 16;
+
+    heroMotion.style.setProperty("--hero-motion-x", `${x}px`);
+    heroMotion.style.setProperty("--hero-motion-y", `${y}px`);
+  });
+
+  hero.addEventListener("pointerleave", () => {
+    heroMotion.style.setProperty("--hero-motion-x", "0px");
+    heroMotion.style.setProperty("--hero-motion-y", "0px");
+  });
+}
 
 updateScrollEffects();
 

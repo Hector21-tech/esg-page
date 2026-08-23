@@ -8,3 +8,5 @@ Thumbs.db
 preview-*.png
 *.log
 
+# Original source exports kept locally; web-friendly copies are tracked
+assets/ChatGPT Image*.png

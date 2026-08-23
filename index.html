@@ -15,9 +15,9 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://elitesportsgroup.se/" />
-    <meta property="og:image" content="https://elitesportsgroup.se/assets/esg-hero.png" />
+    <meta property="og:image" content="https://elitesportsgroup.se/assets/esg-hero-green.png" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="assets/esg-hero.png" />
+    <link rel="preload" as="image" href="assets/esg-hero-green.png" />
     <link rel="stylesheet" href="styles.css" />
     <script>document.documentElement.classList.add("js");</script>
     <noscript><style>.reveal { opacity: 1; transform: none; } .principle__word { position: static; opacity: 1; transform: none; filter: none; } .principle__words { display: grid; height: auto; }</style></noscript>
@@ -28,6 +28,7 @@
     <div class="scroll-progress" aria-hidden="true">
       <span data-scroll-progress></span>
     </div>
+    <div class="page-jump" aria-hidden="true" data-page-jump></div>
 
     <header class="site-header" data-header>
       <a class="brand" href="#top" aria-label="Elite Sports Group, startsida">
@@ -80,10 +81,17 @@
     <main id="main">
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="hero__media" aria-hidden="true">
-          <img src="assets/esg-hero.png" alt="" width="1536" height="1024" />
+          <img src="assets/esg-hero-green.png" alt="" width="1536" height="1024" />
         </div>
         <div class="hero__veil" aria-hidden="true"></div>
         <div class="hero__grid" aria-hidden="true"></div>
+        <div class="hero__motion" aria-hidden="true">
+          <span class="hero__orbit hero__orbit--outer"></span>
+          <span class="hero__orbit hero__orbit--middle"></span>
+          <span class="hero__orbit hero__orbit--inner"></span>
+          <span class="hero__signal"></span>
+          <span class="hero__sweep"></span>
+        </div>
 
         <div class="hero__content page-shell">
           <p class="eyebrow reveal" data-reveal>
