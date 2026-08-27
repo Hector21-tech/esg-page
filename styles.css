@@ -1262,10 +1262,6 @@ body.is-page-revealing .page-jump {
   transition: transform 900ms var(--ease-out), filter 600ms ease;
 }
 
-.story-card--welcome img {
-  object-position: center;
-}
-
 .story-card:hover img {
   filter: saturate(1.08) contrast(1.03);
   transform: scale(1.045);
