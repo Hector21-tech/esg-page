@@ -45,6 +45,8 @@ body {
 
 body.menu-open {
   overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
 }
 
 ::selection {
@@ -1675,14 +1677,28 @@ body.is-page-revealing .page-jump {
     grid-template-columns: 1fr auto;
   }
 
+  body.menu-open .site-header {
+    border-color: transparent;
+    background: transparent;
+    backdrop-filter: none;
+    transition: none;
+  }
+
+  .brand {
+    position: relative;
+    z-index: 2;
+  }
+
   .desktop-nav,
   .header-cta {
     display: none;
   }
 
   .menu-toggle {
+    position: relative;
     z-index: 2;
     display: grid;
+    justify-self: end;
     width: 2.75rem;
     height: 2.75rem;
     padding: 0;
@@ -1712,25 +1728,38 @@ body.is-page-revealing .page-jump {
 
   .mobile-menu {
     position: fixed;
-    z-index: 1;
+    z-index: 90;
     inset: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 7rem var(--page-gutter) 3rem;
+    min-height: 100svh;
+    height: 100dvh;
+    padding:
+      max(7rem, calc(env(safe-area-inset-top) + 6rem))
+      var(--page-gutter)
+      max(2.5rem, calc(env(safe-area-inset-bottom) + 1.5rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
     background:
       radial-gradient(circle at 90% 10%, rgba(199, 165, 99, 0.18), transparent 24rem),
       var(--black);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transform: translateY(-1rem);
-    transition: opacity 450ms var(--ease-out), transform 450ms var(--ease-out);
+    transform: translate3d(0, -1.25rem, 0) scale(1.01);
+    transition:
+      opacity 420ms var(--ease-out),
+      transform 520ms var(--ease-out),
+      visibility 0s linear 520ms;
   }
 
   .mobile-menu.is-open {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0) scale(1);
+    transition-delay: 0s;
   }
 
   .mobile-menu nav {
@@ -1746,9 +1775,37 @@ body.is-page-revealing .page-jump {
     letter-spacing: -0.06em;
     line-height: 0.95;
     text-transform: uppercase;
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+    transition: opacity 350ms ease, transform 600ms var(--ease-out);
+  }
+
+  .mobile-menu.is-open nav a {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .mobile-menu.is-open nav a:nth-child(1) {
+    transition-delay: 80ms;
+  }
+
+  .mobile-menu.is-open nav a:nth-child(2) {
+    transition-delay: 125ms;
+  }
+
+  .mobile-menu.is-open nav a:nth-child(3) {
+    transition-delay: 170ms;
+  }
+
+  .mobile-menu.is-open nav a:nth-child(4) {
+    transition-delay: 215ms;
   }
 
   .mobile-menu__mail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     margin-top: auto;
     padding-top: 1.4rem;
     border-top: 1px solid var(--line-light);

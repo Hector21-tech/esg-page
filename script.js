@@ -43,7 +43,7 @@ menuToggle?.addEventListener("click", () => {
 menuLinks.forEach((link) => link.addEventListener("click", closeMenu));
 
 const sectionLinks = document.querySelectorAll(
-  '.site-header a[href^="#"], .site-footer a[href^="#"], .hero a[href^="#"]',
+  '.site-header a[href^="#"], .mobile-menu a[href^="#"], .site-footer a[href^="#"], .hero a[href^="#"]',
 );
 
 sectionLinks.forEach((link) => {
