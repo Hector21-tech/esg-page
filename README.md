@@ -1,21 +1,20 @@
 # Elite Sports Group
 
-En responsiv ensideswebbplats för Elite Sports Group, byggd med HTML, CSS och JavaScript.
+A responsive single-page website for Elite Sports Group, built with HTML, CSS and JavaScript.
 
-## Lokal förhandsvisning
+## Local preview
 
-Kör från projektmappen:
+Run from the project directory:
 
 ```powershell
 python -m http.server 4173 --bind 127.0.0.1
 ```
 
-Öppna därefter `http://localhost:4173`.
+Then open `http://localhost:4173`.
 
-## Struktur
+## Structure
 
-- `index.html` – sidans innehåll och metadata
-- `styles.css` – layout, färger, responsiv design och animationer
-- `script.js` – mobilmeny och scrollinteraktioner
-- `assets/` – logotyp och hero-bild
-
+- `index.html` – page content and metadata
+- `styles.css` – layout, colours, responsive design and animations
+- `script.js` – mobile navigation and scroll interactions
+- `assets/` – logo and hero image

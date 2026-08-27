@@ -13,6 +13,8 @@ const principleIndex = document.querySelector("[data-principle-index]");
 const principleProgress = document.querySelector("[data-principle-progress]");
 const hero = document.querySelector(".hero");
 const heroMotion = document.querySelector(".hero__motion");
+const playerFeature = document.querySelector("[data-player-feature]");
+const playerCutout = document.querySelector("[data-player-cutout]");
 const pageJump = document.querySelector("[data-page-jump]");
 let activePrincipleStage = 0;
 let pageJumpTimer;
@@ -24,7 +26,7 @@ const closeMenu = () => {
   if (!menuToggle || !mobileMenu) return;
 
   menuToggle.setAttribute("aria-expanded", "false");
-  menuToggle.setAttribute("aria-label", "Öppna meny");
+  menuToggle.setAttribute("aria-label", "Open menu");
   mobileMenu.classList.remove("is-open");
   document.body.classList.remove("menu-open");
 };
@@ -33,7 +35,7 @@ menuToggle?.addEventListener("click", () => {
   const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
 
   menuToggle.setAttribute("aria-expanded", String(!isOpen));
-  menuToggle.setAttribute("aria-label", isOpen ? "Öppna meny" : "Stäng meny");
+  menuToggle.setAttribute("aria-label", isOpen ? "Open menu" : "Close menu");
   mobileMenu?.classList.toggle("is-open", !isOpen);
   document.body.classList.toggle("menu-open", !isOpen);
 });
@@ -209,6 +211,22 @@ if (!reduceMotion && hero && heroMotion) {
   hero.addEventListener("pointerleave", () => {
     heroMotion.style.setProperty("--hero-motion-x", "0px");
     heroMotion.style.setProperty("--hero-motion-y", "0px");
+  });
+}
+
+if (!reduceMotion && playerFeature && playerCutout) {
+  playerFeature.addEventListener("pointermove", (event) => {
+    const rect = playerFeature.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 22;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 14;
+
+    playerFeature.style.setProperty("--feature-x", `${x}px`);
+    playerFeature.style.setProperty("--feature-y", `${y}px`);
+  });
+
+  playerFeature.addEventListener("pointerleave", () => {
+    playerFeature.style.setProperty("--feature-x", "0px");
+    playerFeature.style.setProperty("--feature-y", "0px");
   });
 }
 
