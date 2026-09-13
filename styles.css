@@ -31,6 +31,7 @@
 html {
   scroll-behavior: smooth;
   scrollbar-color: var(--gold-dark) var(--black);
+  overflow-x: hidden;
 }
 
 body {
@@ -46,7 +47,10 @@ body {
 body.menu-open {
   overflow: hidden;
   overscroll-behavior: none;
-  touch-action: none;
+}
+
+main {
+  overflow-x: clip;
 }
 
 ::selection {
@@ -1967,7 +1971,8 @@ body.is-page-revealing .page-jump {
   }
 
   .site-header {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    background: rgba(7, 7, 6, 0.88);
   }
 
   body.menu-open .site-header {
@@ -1992,31 +1997,31 @@ body.is-page-revealing .page-jump {
     z-index: 2;
     display: grid;
     justify-self: end;
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 3rem;
+    height: 3rem;
     padding: 0;
     place-content: center;
-    gap: 0.45rem;
-    border: 1px solid rgba(235, 214, 142, 0.35);
+    gap: 6px;
+    border: 1px solid var(--gold);
     border-radius: 50%;
-    background: transparent;
+    background: var(--black);
     cursor: pointer;
   }
 
   .menu-toggle span {
     display: block;
-    width: 1rem;
-    height: 1px;
+    width: 1.25rem;
+    height: 2px;
     background: var(--gold-bright);
     transition: transform 350ms var(--ease-out);
   }
 
   .menu-toggle[aria-expanded="true"] span:first-child {
-    transform: translateY(0.25rem) rotate(45deg);
+    transform: translateY(4px) rotate(45deg);
   }
 
   .menu-toggle[aria-expanded="true"] span:last-child {
-    transform: translateY(-0.25rem) rotate(-45deg);
+    transform: translateY(-4px) rotate(-45deg);
   }
 
   .mobile-menu {
@@ -2025,14 +2030,16 @@ body.is-page-revealing .page-jump {
     inset: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    min-height: 100svh;
+    justify-content: flex-start;
+    height: 100vh;
     height: 100dvh;
     padding:
       max(7rem, calc(env(safe-area-inset-top) + 6rem))
       var(--page-gutter)
       max(2.5rem, calc(env(safe-area-inset-bottom) + 1.5rem));
+    overflow-x: hidden;
     overflow-y: auto;
+    touch-action: pan-y;
     overscroll-behavior: contain;
     background:
       radial-gradient(circle at 90% 10%, rgba(199, 165, 99, 0.18), transparent 24rem),
@@ -2040,10 +2047,8 @@ body.is-page-revealing .page-jump {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translate3d(0, -1.25rem, 0) scale(1.01);
     transition:
       opacity 420ms var(--ease-out),
-      transform 520ms var(--ease-out),
       visibility 0s linear 520ms;
   }
 
@@ -2051,22 +2056,25 @@ body.is-page-revealing .page-jump {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translate3d(0, 0, 0) scale(1);
     transition-delay: 0s;
   }
 
   .mobile-menu nav {
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
+    min-width: 0;
+    padding-bottom: 2rem;
   }
 
   .mobile-menu nav a {
     padding-block: 0.55rem;
     font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
-    font-size: clamp(3.2rem, 12vw, 6rem);
+    font-size: clamp(2rem, 9vw, 4.5rem);
     font-weight: 800;
     letter-spacing: -0.06em;
-    line-height: 0.95;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
     text-transform: uppercase;
     opacity: 0;
     transform: translate3d(0, 1.25rem, 0);
@@ -2099,6 +2107,8 @@ body.is-page-revealing .page-jump {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    flex-shrink: 0;
+    overflow-wrap: anywhere;
     margin-top: auto;
     padding-top: 1.4rem;
     border-top: 1px solid var(--line-light);
@@ -2412,7 +2422,8 @@ body.is-page-revealing .page-jump {
   }
 
   .contact__title {
-    font-size: clamp(3.7rem, 17vw, 6rem);
+    font-size: clamp(2.5rem, 14.5vw, 6rem);
+    overflow-wrap: anywhere;
   }
 
   .mail-link {

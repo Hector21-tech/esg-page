@@ -108,6 +108,10 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeMenu();
 });
 
+window.matchMedia("(min-width: 981px)").addEventListener("change", (event) => {
+  if (event.matches) closeMenu();
+});
+
 const updateScrollEffects = () => {
   const scrollY = window.scrollY;
   const viewportHeight = window.innerHeight;
