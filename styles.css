@@ -919,6 +919,88 @@ body.is-page-revealing .page-jump {
   .founder__visual::after { animation: none; }
 }
 
+.team-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.team-controls[hidden],
+.team-slide[hidden] {
+  display: none;
+}
+
+.team-controls__names,
+.team-controls__arrows {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.team-controls button {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line-light);
+  border-radius: 2rem;
+  background: transparent;
+  color: var(--ivory-muted);
+  cursor: pointer;
+}
+
+.team-controls button[aria-pressed="true"],
+.team-controls button:hover {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: rgba(199, 165, 99, 0.08);
+}
+
+.team-controls__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.team-slider .team-slide {
+  margin-top: clamp(2rem, 4vw, 4rem);
+  padding-top: 0;
+  border-top: 0;
+}
+
+.team-slide.is-entering {
+  animation: team-enter 500ms var(--ease-out) both;
+}
+
+@keyframes team-enter {
+  from { opacity: 0; transform: translateX(var(--team-enter-x, 40px)); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 480px) {
+  .team-controls { gap: 0.5rem; }
+  .team-controls__names, .team-controls__arrows { gap: 0.35rem; }
+  .team-controls button { padding: 0.65rem 0.7rem; font-size: 0.75rem; }
+}
+
+.team-member {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 7rem);
+  margin-top: clamp(5rem, 8vw, 9rem);
+  padding-top: clamp(3rem, 6vw, 6rem);
+  border-top: 1px solid var(--line-light);
+}
+
+.team-member__foundation {
+  max-width: 30ch;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--gold);
+  color: var(--ivory-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
 .founder__role {
   margin: 0 0 1.25rem;
   color: var(--gold-bright);
@@ -990,7 +1072,8 @@ body.is-page-revealing .page-jump {
     inset: 12% 12% 18%;
   }
 
-  .founder {
+  .founder,
+  .team-member {
     grid-template-columns: 1fr;
   }
 

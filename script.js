@@ -257,3 +257,59 @@ if (reduceMotion || !("IntersectionObserver" in window)) {
 
 const year = document.querySelector("[data-year]");
 if (year) year.textContent = String(new Date().getFullYear());
+
+
+const teamSlider = document.querySelector(".team-slider");
+const teamControls = document.querySelector(".team-controls");
+if (teamSlider && teamControls) {
+  const slides = [...teamSlider.querySelectorAll(".team-slide")];
+  const choices = [...teamControls.querySelectorAll("[data-team-index]")];
+  const status = teamControls.querySelector(".team-controls__status");
+  let active = 0;
+  const showMember = (index, animate = true) => {
+    const next = (index + slides.length) % slides.length;
+    const direction = index >= active ? "40px" : "-40px";
+    slides.forEach((slide, i) => {
+      slide.hidden = i !== next;
+      slide.classList.remove("is-entering");
+    });
+    const slide = slides[next];
+    slide.style.setProperty("--team-enter-x", direction);
+    // Reveal the complete profile even when switching near the section footer.
+    slide.querySelectorAll("[data-reveal]").forEach((item) => item.classList.add("is-visible"));
+    if (animate && !reduceMotion) {
+      void slide.offsetWidth;
+      slide.classList.add("is-entering");
+    }
+    choices.forEach((choice, i) => choice.setAttribute("aria-pressed", String(i === next)));
+    if (animate) status.textContent = `${choices[next].textContent}, ${next + 1} of ${slides.length}`;
+    active = next;
+    if (animate && teamControls.getBoundingClientRect().top < 0) {
+      window.scrollTo({top: window.scrollY + teamControls.getBoundingClientRect().top - 100, behavior: "instant"});
+    }
+    updateScrollEffects();
+  };
+  choices.forEach((choice, i) => choice.addEventListener("click", () => showMember(i)));
+  teamControls.querySelector("[data-team-prev]").addEventListener("click", () => showMember(active - 1));
+  teamControls.querySelector("[data-team-next]").addEventListener("click", () => showMember(active + 1));
+  let touchStart;
+  teamSlider.addEventListener("touchstart", (event) => {
+    touchStart = event.touches.length === 1 ? {x: event.touches[0].clientX, y: event.touches[0].clientY} : null;
+  }, {passive: true});
+  teamSlider.addEventListener("touchend", (event) => {
+    if (!touchStart) return;
+    const dx = event.changedTouches[0].clientX - touchStart.x;
+    const dy = event.changedTouches[0].clientY - touchStart.y;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) showMember(active + (dx < 0 ? 1 : -1));
+    touchStart = null;
+  }, {passive: true});
+  teamSlider.addEventListener("touchcancel", () => { touchStart = null; }, {passive: true});
+  const followHash = () => {
+    const index = slides.findIndex((slide) => `#${slide.id}` === window.location.hash);
+    if (index >= 0) showMember(index, false);
+  };
+  teamControls.hidden = false;
+  showMember(0, false);
+  followHash();
+  window.addEventListener("hashchange", followHash);
+}
