@@ -800,6 +800,216 @@ body.is-page-revealing .page-jump {
   margin-top: 1.4rem;
 }
 
+.team {
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--green-deep), #101c16 55%, var(--black));
+}
+
+.founder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 7rem);
+  align-items: start;
+  margin-top: clamp(3rem, 6vw, 6rem);
+}
+
+.founder__visual {
+  position: relative;
+  isolation: isolate;
+  padding: 2rem 0.75rem 1rem;
+}
+
+.founder__visual::before {
+  position: absolute;
+  z-index: -1;
+  inset: 8% -2% 15%;
+  border: 1px solid rgba(199, 165, 99, 0.25);
+  border-radius: 50%;
+  transform: rotate(-24deg);
+  background: radial-gradient(ellipse, rgba(70, 130, 97, 0.2), transparent 68%);
+  content: "";
+  pointer-events: none;
+}
+
+.founder__visual::after {
+  position: absolute;
+  z-index: -1;
+  inset: 8% -2% 15%;
+  padding: 2px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0deg 245deg, rgba(199, 165, 99, 0.15) 280deg, var(--gold-bright) 315deg, transparent 320deg);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  content: "";
+  pointer-events: none;
+  animation: founder-signal 14s linear infinite;
+}
+
+.founder__visual figure {
+  position: relative;
+  margin: 0;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.founder__visual .founder__portrait {
+  width: 86%;
+  transform: rotate(-3deg);
+}
+
+.founder__image {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(199, 165, 99, 0.3);
+  border-radius: 0.75rem;
+  background: var(--green-deep);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.founder__image::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(7, 17, 13, 0.8));
+  content: "";
+  pointer-events: none;
+}
+
+.founder__image img {
+  filter: saturate(0.85);
+}
+
+.founder__portrait img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 52% center;
+}
+
+.founder__visual figcaption {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  color: var(--ivory);
+  font-size: 0.7rem;
+  letter-spacing: 0.025em;
+  text-shadow: 0 1px 6px #000;
+}
+
+.founder__visual .founder__match {
+  z-index: 1;
+  width: 66%;
+  margin: -5rem 0 0 auto;
+  transform: rotate(4deg);
+}
+
+.founder__match img {
+  width: 100%;
+  height: auto;
+}
+
+@keyframes founder-signal {
+  from { transform: rotate(-24deg); }
+  to { transform: rotate(336deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .founder__visual::after { animation: none; }
+}
+
+.founder__role {
+  margin: 0 0 1.25rem;
+  color: var(--gold-bright);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.founder__name {
+  margin: 0;
+  font-size: clamp(3.5rem, 6.5vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.065em;
+  font-weight: 500;
+}
+
+.founder__name span {
+  color: var(--gold-bright);
+}
+
+.founder__intro {
+  max-width: 25ch;
+  margin: 1.75rem 0 2rem;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  line-height: 1.35;
+  letter-spacing: -0.025em;
+}
+
+.founder__bio {
+  max-width: 57ch;
+  color: var(--ivory-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.founder__bio p {
+  margin: 0 0 1.25rem;
+}
+
+.founder__quote {
+  margin: 2.25rem 0 0;
+  padding: 0 0 0 1.5rem;
+  border-left: 2px solid var(--gold);
+}
+
+.founder__quote p {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.founder__quote footer {
+  margin-top: 1.25rem;
+  font-size: 0.8rem;
+}
+
+.founder__quote footer span {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--ivory-muted);
+}
+
+@media (max-width: 760px) {
+  .founder__visual::before,
+  .founder__visual::after {
+    inset: 12% 12% 18%;
+  }
+
+  .founder {
+    grid-template-columns: 1fr;
+  }
+
+  .founder__portrait img {
+    aspect-ratio: 1 / 1;
+  }
+
+  .founder__visual .founder__match {
+    margin-top: -3rem;
+  }
+
+  .founder__visual figcaption {
+    bottom: 0.75rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.6rem;
+  }
+}
+
 .services {
   position: relative;
   overflow: hidden;
